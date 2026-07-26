@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "490758581438",
+    "project_id": "wind-financial-model",
+    "storage_bucket": "wind-financial-model.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490758581438:android:0e8f5d568b693836dc82ef",
+        "android_client_info": {
+          "package_name": "com.cgr.renewablefinancialmodel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA65Elo0mMQ-0fmS1OTIV6sGyLhX7ziUbs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490758581438:android:e20ddee16ca7b955dc82ef",
+        "android_client_info": {
+          "package_name": "com.cgra.renewablefinancialmodel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA65Elo0mMQ-0fmS1OTIV6sGyLhX7ziUbs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
