@@ -76,8 +76,6 @@ workflows:
           if family_count == 0:
               raise SystemExit('TARGETED_DEVICE_FAMILY was not found in project.pbxproj')
 
-          # Some Xcode projects generate these Info.plist values from build settings.
-          # If they exist, make them consistent with the source Info.plist.
           replacements = {
               r'INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad\s*=\s*[^;]+;':
                   'INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";',
@@ -101,21 +99,34 @@ workflows:
             /usr/libexec/PlistBuddy -c "Add :${key}:1 string UIInterfaceOrientationLandscapeRight" "$PLIST"
           }
 
-          # The ~ipad key is the important one for iPad. The generic key is also
-          # kept consistent so no portrait value can survive in the final bundle.
           set_landscape_array "UISupportedInterfaceOrientations"
           set_landscape_array "UISupportedInterfaceOrientations~ipad"
 
-          # Needed for reliable orientation locking on older iPadOS versions and
-          # for Flutter's setPreferredOrientations behavior on iPad.
           /usr/libexec/PlistBuddy -c "Delete :UIRequiresFullScreen" "$PLIST" 2>/dev/null || true
           /usr/libexec/PlistBuddy -c "Add :UIRequiresFullScreen bool true" "$PLIST"
 
           plutil -lint "$PLIST"
-          echo "Source Info.plist after patch:"
-          plutil -p "$PLIST" | grep -E 'UISupportedInterfaceOrientations|UIRequiresFullScreen' -A 5 || true
-          echo "Targeted device family settings:"
-          grep -n 'TARGETED_DEVICE_FAMILY' "$PBXPROJ"
+
+      - name: Set minimum iOS version to 15.0
+        script: |
+          sed -i '' -E 's/IPHONEOS_DEPLOYMENT_TARGET = [^;]+;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g' ios/Runner.xcodeproj/project.pbxproj
+          if [ -f ios/Podfile ]; then
+            sed -i '' -E "s/^# *platform :ios.*/platform :ios, '15.0'/" ios/Podfile
+            sed -i '' -E "s/^platform :ios.*/platform :ios, '15.0'/" ios/Podfile
+          fi
+
+      - name: Privacy strings + export compliance
+        script: |
+          PLIST="ios/Runner/Info.plist"
+          # file_picker / fotos (obligatorio o Apple rechaza - ITMS-90683)
+          /usr/libexec/PlistBuddy -c "Delete :NSPhotoLibraryUsageDescription" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string 'Esta app accede a tus archivos para seleccionar documentos e imagenes del proyecto.'" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Delete :NSCameraUsageDescription" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string 'Esta app puede usar la camara para adjuntar documentos.'" "$PLIST"
+          # Export compliance
+          /usr/libexec/PlistBuddy -c "Delete :ITSAppUsesNonExemptEncryption" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$PLIST"
+          plutil -lint "$PLIST"
 
       - name: Install pods
         script: find . -name "Podfile" -execdir pod install \;
@@ -141,7 +152,6 @@ workflows:
           APP_PLIST="$APP_DIR/Info.plist"
           test -f "$APP_PLIST"
 
-          echo "Final packaged Info.plist: $APP_PLIST"
           plutil -p "$APP_PLIST" | grep -E 'UIDeviceFamily|UISupportedInterfaceOrientations|UIRequiresFullScreen' -A 6 || true
 
           python3 - "$APP_PLIST" <<'PY'
@@ -167,19 +177,13 @@ workflows:
           ipad = info.get('UISupportedInterfaceOrientations~ipad')
 
           if set(generic or []) != expected:
-              raise SystemExit(
-                  'ERROR: generic supported orientations are not landscape-only: '
-                  f'{generic!r}'
-              )
+              raise SystemExit(f'ERROR: generic orientations not landscape-only: {generic!r}')
           if set(ipad or []) != expected:
-              raise SystemExit(
-                  'ERROR: iPad supported orientations are not landscape-only: '
-                  f'{ipad!r}'
-              )
+              raise SystemExit(f'ERROR: iPad orientations not landscape-only: {ipad!r}')
           if info.get('UIRequiresFullScreen') is not True:
               raise SystemExit('ERROR: UIRequiresFullScreen is not true')
 
-          print('OK: packaged IPA targets only iPad and declares only both landscape orientations.')
+          print('OK: packaged IPA targets only iPad and both landscape orientations.')
           PY
 
     artifacts:
