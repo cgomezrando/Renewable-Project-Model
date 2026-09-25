@@ -1,6 +1,6 @@
 {
-    "name": "Renewable Project Desktop Model",
-    "short_name": "Renewable Project Desktop Model",
+    "name": "Renewable Project Model",
+    "short_name": "Renewable Project Model",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

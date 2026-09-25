@@ -2,9 +2,9 @@ import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/upload_data.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/custom_functions.dart' as functions;
 import '/index.dart';
 import 'solar_assumptions_page_widget.dart' show SolarAssumptionsPageWidget;
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class SolarAssumptionsPageModel
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Custom Action - calculateHourly] action in Row widget.
-  bool? hourlyResult;
+  bool? hourlyResultSolar;
   // Stores action output result for [Backend Call - API (CalculateWindModel)] action in Row widget.
   ApiCallResponse? apiResult;
   // Stores action output result for [Custom Action - showReturnHomeDialog] action in Container widget.
@@ -49,10 +49,6 @@ class SolarAssumptionsPageModel
   FocusNode? lifeFocusNode;
   TextEditingController? lifeTextController;
   String? Function(BuildContext, String?)? lifeTextControllerValidator;
-  // State field(s) for MERCHANT widget.
-  FocusNode? merchantFocusNode;
-  TextEditingController? merchantTextController;
-  String? Function(BuildContext, String?)? merchantTextControllerValidator;
   // State field(s) for PPAPRICE widget.
   FocusNode? ppapriceFocusNode;
   TextEditingController? ppapriceTextController;
@@ -115,18 +111,6 @@ class SolarAssumptionsPageModel
   String? Function(BuildContext, String?)? dscrppaTextControllerValidator;
   // Stores action output result for [Custom Action - showCurtailmentDialog] action in Container widget.
   bool? curtailResult;
-  bool isDataUploading_generacion = false;
-  FFUploadedFile uploadedLocalFile_generacion =
-      FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
-
-  // Stores action output result for [Custom Action - parseCsvProfileLocal] action in Container widget.
-  String? parseErrorGeneracion;
-  bool isDataUploading_cSVPrecios = false;
-  FFUploadedFile uploadedLocalFile_cSVPrecios =
-      FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
-
-  // Stores action output result for [Custom Action - parseCsvProfileLocal] action in Container widget.
-  String? parseErrorPrecios;
 
   @override
   void initState(BuildContext context) {}
@@ -147,9 +131,6 @@ class SolarAssumptionsPageModel
 
     lifeFocusNode?.dispose();
     lifeTextController?.dispose();
-
-    merchantFocusNode?.dispose();
-    merchantTextController?.dispose();
 
     ppapriceFocusNode?.dispose();
     ppapriceTextController?.dispose();

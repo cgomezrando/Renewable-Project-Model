@@ -3,6 +3,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart'; // Imports other custom actions
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
@@ -36,6 +37,11 @@ DateTime? _date(dynamic v) {
   return null;
 }
 
+List<double> _numList(dynamic v) {
+  if (v == null || v is! List) return <double>[];
+  return List<double>.from(v.map((e) => _num(e)));
+}
+
 Future<bool> loadScenario(String scenarioId) async {
   try {
     final doc = await ScenariosRecord.collection.doc(scenarioId).get();
@@ -52,15 +58,31 @@ Future<bool> loadScenario(String scenarioId) async {
       FFAppState().projectDescription = d['projectDescription'] ?? '';
       FFAppState().technology = d['technology'] ?? '';
 
-      // Curtailment
-      FFAppState().curtailmentMode = assumptions['curtailmentMode'] ?? 'none';
-      FFAppState().curtailmentRatePct = _num(assumptions['curtailmentRatePct']);
-      FFAppState().ppaCoversNegativeHours =
-          assumptions['ppaCoversNegativeHours'] ?? false;
-      FFAppState().spotPriceGrowthPct = _num(assumptions['spotPriceGrowthPct']);
-      FFAppState().degradationPct = _num(assumptions['degradationPct']);
+      // Merchant mode
+      FFAppState().merchantMode =
+          (assumptions['merchantMode'] ?? 'simple').toString();
+      FFAppState().priceCurveMode =
+          (assumptions['priceCurveMode'] ?? 'quick').toString();
+      FFAppState().priceYear1 = _num(assumptions['priceYear1']);
+      FFAppState().priceGrowthPct = _num(assumptions['priceGrowthPct']);
+      FFAppState().annualMarketPrices =
+          _numList(assumptions['annualMarketPrices']);
+      FFAppState().captureRateMode =
+          (assumptions['captureRateMode'] ?? 'constant').toString();
+      FFAppState().captureRateConstant =
+          _num(assumptions['captureRateConstant']);
+      FFAppState().annualCaptureRates =
+          _numList(assumptions['annualCaptureRates']);
+      FFAppState().annualCapturedPrices =
+          _numList(assumptions['annualCapturedPrices']);
+      FFAppState().curtailTecnicoPct = _num(assumptions['curtailTecnicoPct']);
+      FFAppState().curtailEconomicoPct =
+          _num(assumptions['curtailEconomicoPct']);
+      FFAppState().curtailEconomicoMode =
+          (assumptions['curtailEconomicoMode'] ?? 'manual').toString();
 
       // Inputs financieros
+      FFAppState().degradationPct = _num(assumptions['degradationPct']);
       FFAppState().installedMw = _num(assumptions['installedMw']);
       FFAppState().installedDCMw = _num(assumptions['installedDCMw']);
       FFAppState().devexKeur = _num(assumptions['devexKeur']);
@@ -84,8 +106,6 @@ Future<bool> loadScenario(String scenarioId) async {
       FFAppState().ppaPriceEurMwh = _num(assumptions['ppaPriceEurMwh']);
       FFAppState().ppaTenorYears = _int(assumptions['ppaTenorYears']);
       FFAppState().ppaVolumePct = _num(assumptions['ppaVolumePct']);
-      FFAppState().merchantPriceEurMwh =
-          _num(assumptions['merchantPriceEurMwh']);
       FFAppState().projectLifeYears = _int(assumptions['projectLifeYears']);
       FFAppState().debtInterestRatePct =
           _num(assumptions['debtInterestRatePct']);

@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/custom_functions.dart' as functions;
 import '/index.dart';
 import 'wind_assumptions_page_widget.dart' show WindAssumptionsPageWidget;
 import 'package:flutter/material.dart';
@@ -15,7 +16,9 @@ class WindAssumptionsPageModel
     extends FlutterFlowModel<WindAssumptionsPageWidget> {
   ///  State fields for stateful widgets in this page.
 
-  // Stores action output result for [Backend Call - API (CalculateWindModel)] action in Row widget.
+  // Stores action output result for [Custom Action - calculateHourly] action in Container widget.
+  bool? hourlyResultWind;
+  // Stores action output result for [Backend Call - API (CalculateWindModel)] action in Container widget.
   ApiCallResponse? apiResult;
   // Stores action output result for [Custom Action - showReturnHomeDialog] action in Container widget.
   bool? goToHomeScreen;
@@ -45,10 +48,6 @@ class WindAssumptionsPageModel
   FocusNode? lifeFocusNode;
   TextEditingController? lifeTextController;
   String? Function(BuildContext, String?)? lifeTextControllerValidator;
-  // State field(s) for MERCHANT widget.
-  FocusNode? merchantFocusNode;
-  TextEditingController? merchantTextController;
-  String? Function(BuildContext, String?)? merchantTextControllerValidator;
   // State field(s) for PPAPRICE widget.
   FocusNode? ppapriceFocusNode;
   TextEditingController? ppapriceTextController;
@@ -101,6 +100,8 @@ class WindAssumptionsPageModel
   FocusNode? dscrppaFocusNode;
   TextEditingController? dscrppaTextController;
   String? Function(BuildContext, String?)? dscrppaTextControllerValidator;
+  // Stores action output result for [Custom Action - showCurtailmentDialog] action in Container widget.
+  bool? curtailResult;
 
   @override
   void initState(BuildContext context) {}
@@ -121,9 +122,6 @@ class WindAssumptionsPageModel
 
     lifeFocusNode?.dispose();
     lifeTextController?.dispose();
-
-    merchantFocusNode?.dispose();
-    merchantTextController?.dispose();
 
     ppapriceFocusNode?.dispose();
     ppapriceTextController?.dispose();

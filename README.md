@@ -1,4 +1,4 @@
-# Renewable Project Desktop Model
+# Renewable Project Model
 
 A new Flutter project.
 

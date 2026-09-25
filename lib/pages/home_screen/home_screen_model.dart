@@ -19,8 +19,6 @@ class HomeScreenModel extends FlutterFlowModel<HomeScreenWidget> {
   bool? dialogConfirmed;
   // Stores action output result for [Custom Action - showNewProjectDialog] action in Container widget.
   bool? dialogResultSolar;
-  // Stores action output result for [Custom Action - showNewProjectDialog] action in Container widget.
-  bool? dialogResultBESS;
   // Stores action output result for [Custom Action - loadScenario] action in Container widget.
   bool? loaded;
 

@@ -880,4 +880,169 @@ class FFAppState extends ChangeNotifier {
   void insertAtIndexInOpexWtgBands(int index, double value) {
     opexWtgBands.insert(index, value);
   }
+
+  String _merchantMode = 'simple';
+  String get merchantMode => _merchantMode;
+  set merchantMode(String value) {
+    _merchantMode = value;
+  }
+
+  String _priceCurveMode = 'quick';
+  String get priceCurveMode => _priceCurveMode;
+  set priceCurveMode(String value) {
+    _priceCurveMode = value;
+  }
+
+  double _priceYear1 = 0.0;
+  double get priceYear1 => _priceYear1;
+  set priceYear1(double value) {
+    _priceYear1 = value;
+  }
+
+  double _priceGrowthPct = 0.0;
+  double get priceGrowthPct => _priceGrowthPct;
+  set priceGrowthPct(double value) {
+    _priceGrowthPct = value;
+  }
+
+  List<double> _annualMarketPrices = [];
+  List<double> get annualMarketPrices => _annualMarketPrices;
+  set annualMarketPrices(List<double> value) {
+    _annualMarketPrices = value;
+  }
+
+  void addToAnnualMarketPrices(double value) {
+    annualMarketPrices.add(value);
+  }
+
+  void removeFromAnnualMarketPrices(double value) {
+    annualMarketPrices.remove(value);
+  }
+
+  void removeAtIndexFromAnnualMarketPrices(int index) {
+    annualMarketPrices.removeAt(index);
+  }
+
+  void updateAnnualMarketPricesAtIndex(
+    int index,
+    double Function(double) updateFn,
+  ) {
+    annualMarketPrices[index] = updateFn(_annualMarketPrices[index]);
+  }
+
+  void insertAtIndexInAnnualMarketPrices(int index, double value) {
+    annualMarketPrices.insert(index, value);
+  }
+
+  String _captureRateMode = 'constant';
+  String get captureRateMode => _captureRateMode;
+  set captureRateMode(String value) {
+    _captureRateMode = value;
+  }
+
+  double _captureRateConstant = 0.0;
+  double get captureRateConstant => _captureRateConstant;
+  set captureRateConstant(double value) {
+    _captureRateConstant = value;
+  }
+
+  List<double> _annualCaptureRates = [];
+  List<double> get annualCaptureRates => _annualCaptureRates;
+  set annualCaptureRates(List<double> value) {
+    _annualCaptureRates = value;
+  }
+
+  void addToAnnualCaptureRates(double value) {
+    annualCaptureRates.add(value);
+  }
+
+  void removeFromAnnualCaptureRates(double value) {
+    annualCaptureRates.remove(value);
+  }
+
+  void removeAtIndexFromAnnualCaptureRates(int index) {
+    annualCaptureRates.removeAt(index);
+  }
+
+  void updateAnnualCaptureRatesAtIndex(
+    int index,
+    double Function(double) updateFn,
+  ) {
+    annualCaptureRates[index] = updateFn(_annualCaptureRates[index]);
+  }
+
+  void insertAtIndexInAnnualCaptureRates(int index, double value) {
+    annualCaptureRates.insert(index, value);
+  }
+
+  List<double> _annualCapturedPrices = [];
+  List<double> get annualCapturedPrices => _annualCapturedPrices;
+  set annualCapturedPrices(List<double> value) {
+    _annualCapturedPrices = value;
+  }
+
+  void addToAnnualCapturedPrices(double value) {
+    annualCapturedPrices.add(value);
+  }
+
+  void removeFromAnnualCapturedPrices(double value) {
+    annualCapturedPrices.remove(value);
+  }
+
+  void removeAtIndexFromAnnualCapturedPrices(int index) {
+    annualCapturedPrices.removeAt(index);
+  }
+
+  void updateAnnualCapturedPricesAtIndex(
+    int index,
+    double Function(double) updateFn,
+  ) {
+    annualCapturedPrices[index] = updateFn(_annualCapturedPrices[index]);
+  }
+
+  void insertAtIndexInAnnualCapturedPrices(int index, double value) {
+    annualCapturedPrices.insert(index, value);
+  }
+
+  double _curtailTecnicoPct = 0.0;
+  double get curtailTecnicoPct => _curtailTecnicoPct;
+  set curtailTecnicoPct(double value) {
+    _curtailTecnicoPct = value;
+  }
+
+  double _curtailEconomicoPct = 0.0;
+  double get curtailEconomicoPct => _curtailEconomicoPct;
+  set curtailEconomicoPct(double value) {
+    _curtailEconomicoPct = value;
+  }
+
+  String _curtailEconomicoMode = 'manual';
+  String get curtailEconomicoMode => _curtailEconomicoMode;
+  set curtailEconomicoMode(String value) {
+    _curtailEconomicoMode = value;
+  }
+
+  String _templateUrlMarketPrices = '';
+  String get templateUrlMarketPrices => _templateUrlMarketPrices;
+  set templateUrlMarketPrices(String value) {
+    _templateUrlMarketPrices = value;
+  }
+
+  String _templateUrlCaptureRates = '';
+  String get templateUrlCaptureRates => _templateUrlCaptureRates;
+  set templateUrlCaptureRates(String value) {
+    _templateUrlCaptureRates = value;
+  }
+
+  String _templateUrlCapturedPrices = '';
+  String get templateUrlCapturedPrices => _templateUrlCapturedPrices;
+  set templateUrlCapturedPrices(String value) {
+    _templateUrlCapturedPrices = value;
+  }
+
+  String _hourlyPricesCsv = '';
+  String get hourlyPricesCsv => _hourlyPricesCsv;
+  set hourlyPricesCsv(String value) {
+    _hourlyPricesCsv = value;
+  }
 }

@@ -3,6 +3,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart'; // Imports other custom actions
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
@@ -110,13 +111,14 @@ Future<void> showScenariosListDialog(BuildContext context) async {
                             );
                           }
                           if (snapshot.hasError) {
+                            print('FIRESTORE ERROR: ${snapshot.error}');
                             return _buildEmpty(
                               icon: Icons.error_outline,
                               iconColor: const Color(0xFFDC2626),
                               iconBg: const Color(0xFFFEE2E2),
                               title: 'Error al cargar',
                               message:
-                                  'No se pudieron descargar los escenarios. Comprueba tu conexión a Internet o asegúrate de que tienes al menos un escenario guardado.',
+                                  'No se pudieron descargar los escenarios. Comprueba tu conexión a Internet.',
                             );
                           }
                           final docs = snapshot.data?.docs ?? [];

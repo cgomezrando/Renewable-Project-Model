@@ -3,9 +3,12 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart'; // Imports other custom actions
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
+
+import '/custom_code/actions/index.dart';
 
 double _d(String? s) {
   if (s == null || s.trim().isEmpty) return 0;
@@ -23,6 +26,7 @@ Future syncInputsToAppState(
   String capexTurbineKeur,
   String capexBopKeur,
   String capexInterKeur,
+  String degradationPct,
   String ncfP50Pct,
   String ncfP75Pct,
   String availabilityPct,
@@ -32,7 +36,6 @@ Future syncInputsToAppState(
   String ppaPriceEurMwh,
   String ppaTenorYears,
   String ppaVolumePct,
-  String merchantPriceEurMwh,
   String projectLifeYears,
   String debtInterestRatePct,
   String debtTenorYears,
@@ -46,6 +49,7 @@ Future syncInputsToAppState(
     FFAppState().installedMw = _d(installedMw);
     FFAppState().devexKeur = _d(devexKeur);
     FFAppState().capexInterKeur = _d(capexInterKeur);
+    FFAppState().degradationPct = _d(degradationPct);
     FFAppState().ncfP50Pct = _d(ncfP50Pct);
     FFAppState().ncfP75Pct = _d(ncfP75Pct);
     FFAppState().availabilityPct = _d(availabilityPct);
@@ -55,7 +59,6 @@ Future syncInputsToAppState(
     FFAppState().ppaPriceEurMwh = _d(ppaPriceEurMwh);
     FFAppState().ppaTenorYears = _i(ppaTenorYears);
     FFAppState().ppaVolumePct = _d(ppaVolumePct);
-    FFAppState().merchantPriceEurMwh = _d(merchantPriceEurMwh);
     FFAppState().projectLifeYears = _i(projectLifeYears);
     FFAppState().debtInterestRatePct = _d(debtInterestRatePct);
     FFAppState().debtTenorYears = _i(debtTenorYears);
@@ -66,8 +69,6 @@ Future syncInputsToAppState(
     final bool isSolar = FFAppState().technology.toLowerCase() == 'solar';
 
     if (isSolar) {
-      // En solar, el CAPEX de equipos y BOS se introduce en c€/Wp.
-      // Conversión a k€ totales: c€/Wp × MWp × 10
       final double centEquipos = _d(capexEquiposSolaresCentWp);
       final double centBos = _d(capexBoSCentWp);
       final double dcMw = FFAppState().installedDCMw;
@@ -78,7 +79,6 @@ Future syncInputsToAppState(
       FFAppState().capexTurbineKeur = centEquipos * dcMw * 10;
       FFAppState().capexBopKeur = centBos * dcMw * 10;
     } else {
-      // Wind y BESS: CAPEX en k€ totales directamente.
       FFAppState().capexTurbineKeur = _d(capexTurbineKeur);
       FFAppState().capexBopKeur = _d(capexBopKeur);
     }

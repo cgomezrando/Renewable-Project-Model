@@ -2,9 +2,9 @@ import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/upload_data.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/custom_functions.dart' as functions;
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -67,12 +67,6 @@ class _SolarAssumptionsPageWidgetState
             ? FFAppState().projectLifeYears.toString()
             : '');
     _model.lifeFocusNode ??= FocusNode();
-
-    _model.merchantTextController ??= TextEditingController(
-        text: FFAppState().scenarioLoaded == true
-            ? FFAppState().merchantPriceEurMwh.toString()
-            : '');
-    _model.merchantFocusNode ??= FocusNode();
 
     _model.ppapriceTextController ??= TextEditingController(
         text: FFAppState().scenarioLoaded == true
@@ -148,7 +142,7 @@ class _SolarAssumptionsPageWidgetState
 
     _model.gearingTextController ??= TextEditingController(
         text: FFAppState().scenarioLoaded == true
-            ? FFAppState().gearingPct.toString()
+            ? FFAppState().targetGearingPct.toString()
             : '');
     _model.gearingFocusNode ??= FocusNode();
 
@@ -322,6 +316,7 @@ class _SolarAssumptionsPageWidgetState
                                         '0',
                                         '0',
                                         _model.hvcapexTextController.text,
+                                        _model.degradaccionTextController.text,
                                         _model.ncf50TextController.text,
                                         _model.ncf75TextController.text,
                                         _model.avaiTextController.text,
@@ -331,15 +326,12 @@ class _SolarAssumptionsPageWidgetState
                                         _model.ppapriceTextController.text,
                                         _model.ppatenorTextController.text,
                                         _model.ppavolTextController.text,
-                                        _model.merchantTextController.text,
                                         _model.lifeTextController.text,
                                         _model.debtTextController.text,
                                         _model.debttenorTextController.text,
                                         _model.dscrppaTextController.text,
                                         _model.dscrmerTextController.text,
-                                        FFAppState()
-                                            .targetGearingPct
-                                            .toString(),
+                                        _model.gearingTextController.text,
                                         _model.capExEquiposSolaresTextController
                                             .text,
                                         _model.capExBOSTextController.text,
@@ -349,11 +341,11 @@ class _SolarAssumptionsPageWidgetState
                                         await actions.showLoadingDialog(
                                           context,
                                         );
-                                        _model.hourlyResult =
+                                        _model.hourlyResultSolar =
                                             await actions.calculateHourly(
                                           context,
                                         );
-                                        if (_model.hourlyResult!) {
+                                        if (_model.hourlyResultSolar!) {
                                           await actions.hideLoadingDialog(
                                             context,
                                           );
@@ -399,8 +391,9 @@ class _SolarAssumptionsPageWidgetState
                                               .ppatenorTextController.text,
                                           ppaVolumePct:
                                               _model.ppavolTextController.text,
-                                          merchantPriceEurMwh: _model
-                                              .merchantTextController.text,
+                                          merchantPriceEurMwh: FFAppState()
+                                              .merchantPriceEurMwh
+                                              .toString(),
                                           projectLifeYears:
                                               _model.lifeTextController.text,
                                           debtInterestRatePct:
@@ -438,6 +431,31 @@ class _SolarAssumptionsPageWidgetState
                                               FFAppState().indexCapexBop,
                                           indexCapexInterconn:
                                               FFAppState().indexCapexInterconn,
+                                          opexWtgBandsJson:
+                                              FFAppState().opexMode,
+                                          merchantMode:
+                                              FFAppState().merchantMode,
+                                          curtailEconomicoPct: FFAppState()
+                                              .curtailEconomicoPct
+                                              .toString(),
+                                          curtailTecnicoPct: FFAppState()
+                                              .curtailTecnicoPct
+                                              .toString(),
+                                          annualMarketPricesJson:
+                                              functions.annualMarketPricesJson(
+                                                  FFAppState()
+                                                      .annualMarketPrices
+                                                      .toList()),
+                                          annualCaptureRatesJson:
+                                              functions.annualCaptureRatesJson(
+                                                  FFAppState()
+                                                      .annualCaptureRates
+                                                      .toList()),
+                                          annualCapturedPricesJson: functions
+                                              .annualCapturedPricesJson(
+                                                  FFAppState()
+                                                      .annualCapturedPrices
+                                                      .toList()),
                                         );
 
                                         if ((_model.apiResult?.succeeded ??
@@ -710,7 +728,7 @@ class _SolarAssumptionsPageWidgetState
                           alignment: AlignmentDirectional(-1.0, 0.0),
                           child: Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(
-                                55.0, 5.0, 10.0, 0.0),
+                                30.0, 5.0, 10.0, 0.0),
                             child: Container(
                               width: double.infinity,
                               height: 50.0,
@@ -862,8 +880,7 @@ class _SolarAssumptionsPageWidgetState
                                                                   .bodyMedium
                                                                   .fontStyle,
                                                         ),
-                                                        color:
-                                                            Color(0xFFF5A400),
+                                                        color: Colors.black,
                                                         letterSpacing: 0.0,
                                                         fontWeight:
                                                             FlutterFlowTheme.of(
@@ -975,8 +992,7 @@ class _SolarAssumptionsPageWidgetState
                                                                   .bodyMedium
                                                                   .fontStyle,
                                                         ),
-                                                        color:
-                                                            Color(0xFFF5A400),
+                                                        color: Colors.black,
                                                         letterSpacing: 0.0,
                                                         fontWeight:
                                                             FlutterFlowTheme.of(
@@ -1084,7 +1100,7 @@ class _SolarAssumptionsPageWidgetState
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             10.0, 0.0, 0.0, 0.0),
                                         child: Container(
-                                          width: 100.0,
+                                          width: 80.0,
                                           height: 35.0,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.only(
@@ -1124,8 +1140,7 @@ class _SolarAssumptionsPageWidgetState
                                                                   .bodyMedium
                                                                   .fontStyle,
                                                         ),
-                                                        color:
-                                                            Color(0xFFF5A400),
+                                                        color: Colors.black,
                                                         letterSpacing: 0.0,
                                                         fontWeight:
                                                             FlutterFlowTheme.of(
@@ -1183,7 +1198,7 @@ class _SolarAssumptionsPageWidgetState
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             10.0, 0.0, 0.0, 0.0),
                                         child: Container(
-                                          width: 100.0,
+                                          width: 80.0,
                                           height: 35.0,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.only(
@@ -1222,8 +1237,7 @@ class _SolarAssumptionsPageWidgetState
                                                                   .bodyMedium
                                                                   .fontStyle,
                                                         ),
-                                                        color:
-                                                            Color(0xFFF5A400),
+                                                        color: Colors.black,
                                                         letterSpacing: 0.0,
                                                         fontWeight:
                                                             FlutterFlowTheme.of(
@@ -1261,7 +1275,7 @@ class _SolarAssumptionsPageWidgetState
                                     55.0, 0.0, 0.0, 0.0),
                                 child: Container(
                                   width: 510.0,
-                                  height: 320.0,
+                                  height: 275.0,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(5.0),
@@ -2660,7 +2674,7 @@ class _SolarAssumptionsPageWidgetState
                                       40.0, 0.0, 0.0, 0.0),
                                   child: Container(
                                     width: 450.0,
-                                    height: 320.0,
+                                    height: 275.0,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(5.0),
@@ -3007,267 +3021,6 @@ class _SolarAssumptionsPageWidgetState
                                                   ),
                                                 ),
                                               ],
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 5.0, 0.0, 0.0),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(10.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      'Precio Merchant',
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .bodyMedium
-                                                          .override(
-                                                            font: GoogleFonts
-                                                                .inter(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontStyle:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontStyle,
-                                                            ),
-                                                            fontSize: 16.0,
-                                                            letterSpacing: 0.0,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                    ),
-                                                  ),
-                                                  Flexible(
-                                                    child: Align(
-                                                      alignment:
-                                                          AlignmentDirectional(
-                                                              1.0, 0.0),
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    50.0,
-                                                                    0.0,
-                                                                    10.0,
-                                                                    0.0),
-                                                        child: Container(
-                                                          width: 200.0,
-                                                          height: 45.0,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .only(
-                                                              topLeft: Radius
-                                                                  .circular(
-                                                                      5.0),
-                                                              topRight: Radius
-                                                                  .circular(
-                                                                      5.0),
-                                                              bottomLeft: Radius
-                                                                  .circular(
-                                                                      5.0),
-                                                              bottomRight:
-                                                                  Radius
-                                                                      .circular(
-                                                                          5.0),
-                                                            ),
-                                                            border: Border.all(
-                                                              color: Color(
-                                                                  0xFFE2E8F0),
-                                                              width: 1.0,
-                                                            ),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        10.0,
-                                                                        0.0,
-                                                                        10.0,
-                                                                        0.0),
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceAround,
-                                                              children: [
-                                                                Expanded(
-                                                                  child: Align(
-                                                                    alignment:
-                                                                        AlignmentDirectional(
-                                                                            -1.0,
-                                                                            0.0),
-                                                                    child:
-                                                                        Container(
-                                                                      width:
-                                                                          200.0,
-                                                                      child:
-                                                                          TextFormField(
-                                                                        controller:
-                                                                            _model.merchantTextController,
-                                                                        focusNode:
-                                                                            _model.merchantFocusNode,
-                                                                        autofocus:
-                                                                            false,
-                                                                        enabled:
-                                                                            true,
-                                                                        obscureText:
-                                                                            false,
-                                                                        decoration:
-                                                                            InputDecoration(
-                                                                          isDense:
-                                                                              true,
-                                                                          labelStyle: FlutterFlowTheme.of(context)
-                                                                              .bodyMedium
-                                                                              .override(
-                                                                                font: GoogleFonts.inter(
-                                                                                  fontWeight: FontWeight.w600,
-                                                                                  fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                                ),
-                                                                                color: Colors.black,
-                                                                                fontSize: 24.0,
-                                                                                letterSpacing: 0.0,
-                                                                                fontWeight: FontWeight.w600,
-                                                                                fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                              ),
-                                                                          alignLabelWithHint:
-                                                                              false,
-                                                                          hintText:
-                                                                              'Inserta el valor',
-                                                                          hintStyle: FlutterFlowTheme.of(context)
-                                                                              .labelMedium
-                                                                              .override(
-                                                                                font: GoogleFonts.inter(
-                                                                                  fontWeight: FlutterFlowTheme.of(context).labelMedium.fontWeight,
-                                                                                  fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                                                                ),
-                                                                                color: Color(0xFF1F4E78),
-                                                                                letterSpacing: 0.0,
-                                                                                fontWeight: FlutterFlowTheme.of(context).labelMedium.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                                                              ),
-                                                                          enabledBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(
-                                                                              color: Color(0x00000000),
-                                                                              width: 2.0,
-                                                                            ),
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(8.0),
-                                                                          ),
-                                                                          focusedBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(
-                                                                              color: Color(0x00000000),
-                                                                              width: 2.0,
-                                                                            ),
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(8.0),
-                                                                          ),
-                                                                          errorBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(
-                                                                              color: Color(0x00000000),
-                                                                              width: 2.0,
-                                                                            ),
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(8.0),
-                                                                          ),
-                                                                          focusedErrorBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(
-                                                                              color: Color(0x00000000),
-                                                                              width: 2.0,
-                                                                            ),
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(8.0),
-                                                                          ),
-                                                                          filled:
-                                                                              true,
-                                                                          fillColor:
-                                                                              Colors.white,
-                                                                        ),
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyMedium
-                                                                            .override(
-                                                                              font: GoogleFonts.inter(
-                                                                                fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                                fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                              ),
-                                                                              color: Colors.black,
-                                                                              letterSpacing: 0.0,
-                                                                              fontWeight: FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                              fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                            ),
-                                                                        cursorColor:
-                                                                            FlutterFlowTheme.of(context).primaryText,
-                                                                        enableInteractiveSelection:
-                                                                            true,
-                                                                        validator: _model
-                                                                            .merchantTextControllerValidator
-                                                                            .asValidator(context),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          20.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                                  child: Text(
-                                                                    '€/MWh',
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          font:
-                                                                              GoogleFonts.inter(
-                                                                            fontWeight:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                                                                            fontStyle:
-                                                                                FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                                                          ),
-                                                                          letterSpacing:
-                                                                              0.0,
-                                                                          fontWeight: FlutterFlowTheme.of(context)
-                                                                              .bodyMedium
-                                                                              .fontWeight,
-                                                                          fontStyle: FlutterFlowTheme.of(context)
-                                                                              .bodyMedium
-                                                                              .fontStyle,
-                                                                        ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
                                             ),
                                             Padding(
                                               padding: EdgeInsetsDirectional
@@ -7619,16 +7372,16 @@ class _SolarAssumptionsPageWidgetState
                                                             .fromSTEB(5.0, 0.0,
                                                                 0.0, 0.0),
                                                     child: Text(
-                                                      'Configurar Curtailment: ${valueOrDefault<String>(
+                                                      'Configurar ingresos merchant y PPA: ${valueOrDefault<String>(
                                                         () {
                                                           if (FFAppState()
                                                                   .curtailmentMode ==
-                                                              'simple') {
+                                                              'detailed') {
                                                             return 'Simple';
                                                           } else if (FFAppState()
                                                                   .curtailmentMode ==
                                                               'hourly') {
-                                                            return 'Horario';
+                                                            return 'Detallado';
                                                           } else {
                                                             return 'Desactivado';
                                                           }
@@ -7654,7 +7407,7 @@ class _SolarAssumptionsPageWidgetState
                                                                 ),
                                                                 color: Color(
                                                                     0xFFF5A400),
-                                                                fontSize: 18.0,
+                                                                fontSize: 16.4,
                                                                 letterSpacing:
                                                                     0.0,
                                                                 fontWeight: FlutterFlowTheme.of(
@@ -7674,7 +7427,7 @@ class _SolarAssumptionsPageWidgetState
                                                             .fromSTEB(5.0, 0.0,
                                                                 0.0, 0.0),
                                                     child: Text(
-                                                      'Ajusta el modelado de precios negativos',
+                                                      'Ajusta el modelado de precios Merchant e ingresos via PPA',
                                                       style:
                                                           FlutterFlowTheme.of(
                                                                   context)
@@ -7694,7 +7447,7 @@ class _SolarAssumptionsPageWidgetState
                                                                 ),
                                                                 color: Color(
                                                                     0xFFF5A400),
-                                                                fontSize: 14.0,
+                                                                fontSize: 12.0,
                                                                 letterSpacing:
                                                                     0.0,
                                                                 fontWeight: FlutterFlowTheme.of(
@@ -7714,331 +7467,6 @@ class _SolarAssumptionsPageWidgetState
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 5.0, 0.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        if (FFAppState().curtailmentMode ==
-                                            'hourly')
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(-1.0, 0.0),
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      40.0, 0.0, 10.0, 0.0),
-                                              child: InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  final selectedFiles =
-                                                      await selectFiles(
-                                                    multiFile: false,
-                                                  );
-                                                  if (selectedFiles != null) {
-                                                    safeSetState(() => _model
-                                                            .isDataUploading_generacion =
-                                                        true);
-                                                    var selectedUploadedFiles =
-                                                        <FFUploadedFile>[];
-
-                                                    try {
-                                                      selectedUploadedFiles =
-                                                          selectedFiles
-                                                              .map((m) =>
-                                                                  FFUploadedFile(
-                                                                    name: m
-                                                                        .storagePath
-                                                                        .split(
-                                                                            '/')
-                                                                        .last,
-                                                                    bytes:
-                                                                        m.bytes,
-                                                                    originalFilename:
-                                                                        m.originalFilename,
-                                                                  ))
-                                                              .toList();
-                                                    } finally {
-                                                      _model.isDataUploading_generacion =
-                                                          false;
-                                                    }
-                                                    if (selectedUploadedFiles
-                                                            .length ==
-                                                        selectedFiles.length) {
-                                                      safeSetState(() {
-                                                        _model.uploadedLocalFile_generacion =
-                                                            selectedUploadedFiles
-                                                                .first;
-                                                      });
-                                                    } else {
-                                                      safeSetState(() {});
-                                                      return;
-                                                    }
-                                                  }
-
-                                                  _model.parseErrorGeneracion =
-                                                      await actions
-                                                          .parseCsvProfileLocal(
-                                                    _model
-                                                        .uploadedLocalFile_generacion,
-                                                    8760,
-                                                    true,
-                                                  );
-                                                  if (_model.parseErrorGeneracion !=
-                                                          null &&
-                                                      _model.parseErrorGeneracion !=
-                                                          '') {
-                                                    await actions
-                                                        .showUploadStatusDialog(
-                                                      context,
-                                                      _model
-                                                          .parseErrorGeneracion,
-                                                    );
-                                                  } else {
-                                                    await actions
-                                                        .showUploadStatusDialog(
-                                                      context,
-                                                      '',
-                                                    );
-                                                  }
-
-                                                  safeSetState(() {});
-                                                },
-                                                child: Container(
-                                                  width: 200.0,
-                                                  height: 50.0,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(10.0),
-                                                      topRight:
-                                                          Radius.circular(10.0),
-                                                      bottomLeft:
-                                                          Radius.circular(10.0),
-                                                      bottomRight:
-                                                          Radius.circular(10.0),
-                                                    ),
-                                                    border: Border.all(
-                                                      color: Color(0xFFE2E8F0),
-                                                      width: 1.0,
-                                                    ),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.upload,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryText,
-                                                        size: 50.0,
-                                                      ),
-                                                      Text(
-                                                        'Subir CSV generación',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  font:
-                                                                      GoogleFonts
-                                                                          .inter(
-                                                                    fontWeight: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .fontWeight,
-                                                                    fontStyle: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .fontStyle,
-                                                                  ),
-                                                                  color: Colors
-                                                                      .black,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontStyle,
-                                                                ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        if (FFAppState().curtailmentMode ==
-                                            'hourly')
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(-1.0, 0.0),
-                                            child: InkWell(
-                                              splashColor: Colors.transparent,
-                                              focusColor: Colors.transparent,
-                                              hoverColor: Colors.transparent,
-                                              highlightColor:
-                                                  Colors.transparent,
-                                              onTap: () async {
-                                                final selectedFiles =
-                                                    await selectFiles(
-                                                  multiFile: false,
-                                                );
-                                                if (selectedFiles != null) {
-                                                  safeSetState(() => _model
-                                                          .isDataUploading_cSVPrecios =
-                                                      true);
-                                                  var selectedUploadedFiles =
-                                                      <FFUploadedFile>[];
-
-                                                  try {
-                                                    selectedUploadedFiles =
-                                                        selectedFiles
-                                                            .map((m) =>
-                                                                FFUploadedFile(
-                                                                  name: m
-                                                                      .storagePath
-                                                                      .split(
-                                                                          '/')
-                                                                      .last,
-                                                                  bytes:
-                                                                      m.bytes,
-                                                                  originalFilename:
-                                                                      m.originalFilename,
-                                                                ))
-                                                            .toList();
-                                                  } finally {
-                                                    _model.isDataUploading_cSVPrecios =
-                                                        false;
-                                                  }
-                                                  if (selectedUploadedFiles
-                                                          .length ==
-                                                      selectedFiles.length) {
-                                                    safeSetState(() {
-                                                      _model.uploadedLocalFile_cSVPrecios =
-                                                          selectedUploadedFiles
-                                                              .first;
-                                                    });
-                                                  } else {
-                                                    safeSetState(() {});
-                                                    return;
-                                                  }
-                                                }
-
-                                                _model.parseErrorPrecios =
-                                                    await actions
-                                                        .parseCsvProfileLocal(
-                                                  _model
-                                                      .uploadedLocalFile_cSVPrecios,
-                                                  8760,
-                                                  false,
-                                                );
-                                                if (_model.parseErrorPrecios !=
-                                                        null &&
-                                                    _model.parseErrorPrecios !=
-                                                        '') {
-                                                  await actions
-                                                      .showUploadStatusDialog(
-                                                    context,
-                                                    _model.parseErrorPrecios,
-                                                  );
-                                                } else {
-                                                  await actions
-                                                      .showUploadStatusDialog(
-                                                    context,
-                                                    '',
-                                                  );
-                                                }
-
-                                                safeSetState(() {});
-                                              },
-                                              child: Container(
-                                                width: 200.0,
-                                                height: 50.0,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(10.0),
-                                                    topRight:
-                                                        Radius.circular(10.0),
-                                                    bottomLeft:
-                                                        Radius.circular(10.0),
-                                                    bottomRight:
-                                                        Radius.circular(10.0),
-                                                  ),
-                                                  border: Border.all(
-                                                    color: Color(0xFFE2E8F0),
-                                                    width: 1.0,
-                                                  ),
-                                                ),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.upload,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                      size: 50.0,
-                                                    ),
-                                                    Text(
-                                                      'Subir CSV precios',
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .bodyMedium
-                                                          .override(
-                                                            font: GoogleFonts
-                                                                .inter(
-                                                              fontWeight:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontWeight,
-                                                              fontStyle:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontStyle,
-                                                            ),
-                                                            color: Colors.black,
-                                                            letterSpacing: 0.0,
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                      ],
                                     ),
                                   ),
                                 ],

@@ -3,6 +3,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart'; // Imports other custom actions
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
@@ -18,10 +19,18 @@ Future<String?> saveScenario(String scenarioName) async {
     if (uid.isEmpty) return null;
 
     final assumptionsJson = jsonEncode({
-      'curtailmentMode': FFAppState().curtailmentMode,
-      'curtailmentRatePct': FFAppState().curtailmentRatePct,
-      'ppaCoversNegativeHours': FFAppState().ppaCoversNegativeHours,
-      'spotPriceGrowthPct': FFAppState().spotPriceGrowthPct,
+      'merchantMode': FFAppState().merchantMode,
+      'priceCurveMode': FFAppState().priceCurveMode,
+      'priceYear1': FFAppState().priceYear1,
+      'priceGrowthPct': FFAppState().priceGrowthPct,
+      'annualMarketPrices': FFAppState().annualMarketPrices,
+      'captureRateMode': FFAppState().captureRateMode,
+      'captureRateConstant': FFAppState().captureRateConstant,
+      'annualCaptureRates': FFAppState().annualCaptureRates,
+      'annualCapturedPrices': FFAppState().annualCapturedPrices,
+      'curtailTecnicoPct': FFAppState().curtailTecnicoPct,
+      'curtailEconomicoPct': FFAppState().curtailEconomicoPct,
+      'curtailEconomicoMode': FFAppState().curtailEconomicoMode,
       'degradationPct': FFAppState().degradationPct,
       'installedMw': FFAppState().installedMw,
       'installedDCMw': FFAppState().installedDCMw,
@@ -42,7 +51,6 @@ Future<String?> saveScenario(String scenarioName) async {
       'ppaPriceEurMwh': FFAppState().ppaPriceEurMwh,
       'ppaTenorYears': FFAppState().ppaTenorYears,
       'ppaVolumePct': FFAppState().ppaVolumePct,
-      'merchantPriceEurMwh': FFAppState().merchantPriceEurMwh,
       'projectLifeYears': FFAppState().projectLifeYears,
       'debtInterestRatePct': FFAppState().debtInterestRatePct,
       'debtTenorYears': FFAppState().debtTenorYears,

@@ -29,5 +29,6 @@ export '/custom_code/actions/show_goal_seek_dialog.dart'
     show showGoalSeekDialog;
 export '/custom_code/actions/show_opex_config_dialog.dart'
     show showOpexConfigDialog;
-export '/custom_code/actions/opex_bands_json_string.dart'
-    show opexBandsJsonString;
+export '/custom_code/actions/parse_csv_annual.dart' show parseCsvAnnual;
+export '/custom_code/actions/load_hourly_prices_csv.dart'
+    show loadHourlyPricesCsv;

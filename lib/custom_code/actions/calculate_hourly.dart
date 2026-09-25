@@ -3,9 +3,12 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart'; // Imports other custom actions
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
+
+import '/custom_code/actions/index.dart';
 
 import '/app_state.dart';
 import 'dart:convert';
@@ -35,10 +38,12 @@ Future<bool> calculateHourly(BuildContext context) async {
   try {
     final Map<String, dynamic> payload = {
       'technology': FFAppState().technology,
-      'curtailment_mode': FFAppState().curtailmentMode,
-      'curtailment_rate_pct': FFAppState().curtailmentRatePct,
-      'ppa_covers_negative_hours': FFAppState().ppaCoversNegativeHours,
-      'spot_price_growth_pct': FFAppState().spotPriceGrowthPct,
+      'merchant_mode': FFAppState().merchantMode,
+      'curtail_econ_pct': FFAppState().curtailEconomicoPct,
+      'curtail_tecnico_pct': FFAppState().curtailTecnicoPct,
+      'annual_market_prices': FFAppState().annualMarketPrices,
+      'annual_capture_rates': FFAppState().annualCaptureRates,
+      'annual_captured_prices': FFAppState().annualCapturedPrices,
       'generation_profile': FFAppState().generationProfile,
       'price_profile': FFAppState().priceProfile,
       'degradation_pct': FFAppState().degradationPct,
@@ -59,7 +64,6 @@ Future<bool> calculateHourly(BuildContext context) async {
       'ppa_price_eur_mwh': FFAppState().ppaPriceEurMwh,
       'ppa_tenor_years': FFAppState().ppaTenorYears,
       'ppa_volume_pct': FFAppState().ppaVolumePct,
-      'merchant_price_eur_mwh': FFAppState().merchantPriceEurMwh,
       'project_life_years': life,
       'debt_interest_rate_pct': FFAppState().debtInterestRatePct,
       'debt_tenor_years': FFAppState().debtTenorYears,
@@ -71,6 +75,7 @@ Future<bool> calculateHourly(BuildContext context) async {
       'index_capex_turbine': FFAppState().indexCapexTurbine,
       'index_capex_bop': FFAppState().indexCapexBop,
       'index_capex_inter': FFAppState().indexCapexInterconn,
+      'hourly_prices_csv': FFAppState().hourlyPricesCsv,
     };
 
     final response = await http.post(

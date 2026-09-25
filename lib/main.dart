@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
 
     _appStateNotifier = AppStateNotifier.instance;
     _router = createRouter(_appStateNotifier);
-    userStream = renewableProjectDesktopModelFirebaseUserStream()
+    userStream = renewableProjectModelFirebaseUserStream()
       ..listen((user) {
         _appStateNotifier.update(user);
       });
@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Renewable Project Desktop Model',
+      title: 'Renewable Project Model',
       scrollBehavior: MyAppScrollBehavior(),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,

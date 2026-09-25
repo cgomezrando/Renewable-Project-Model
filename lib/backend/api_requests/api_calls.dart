@@ -44,6 +44,13 @@ class CalculateWindModelCall {
     bool? indexCapexBop,
     bool? indexCapexInterconn,
     String? opexWtgBandsJson = 'False',
+    String? merchantMode = '',
+    String? curtailEconomicoPct = '',
+    String? curtailTecnicoPct = '',
+    String? annualMarketPricesJson = '',
+    String? annualCaptureRatesJson = '',
+    String? annualCapturedPricesJson = '',
+    String? hourlyPricesCsv = '',
   }) async {
     final ffApiRequestBody = '''
 {
@@ -61,7 +68,6 @@ class CalculateWindModelCall {
   "ppa_price_eur_mwh": "${escapeStringForJson(ppaPriceEurMwh)}",
   "ppa_tenor_years": "${escapeStringForJson(ppaTenorYears)}",
   "ppa_volume_pct": "${escapeStringForJson(ppaVolumePct)}",
-  "merchant_price_eur_mwh": "${escapeStringForJson(merchantPriceEurMwh)}",
   "project_life_years": "${escapeStringForJson(projectLifeYears)}",
   "debt_interest_rate_pct": "${escapeStringForJson(debtInterestRatePct)}",
   "debt_tenor_years": "${escapeStringForJson(debtTenorYears)}",
@@ -70,16 +76,19 @@ class CalculateWindModelCall {
   "target_gearing_pct": "${escapeStringForJson(targetGearingPct)}",
 "technology": "${escapeStringForJson(technology)}",
 "degradation_pct": "${escapeStringForJson(degradationPct)}",
-"curtailment_mode": "${escapeStringForJson(curtailmentMode)}",
-"curtailment_rate_pct": "${escapeStringForJson(curtailmentRatePct)}",
-"ppa_covers_negative_hours": "${escapeStringForJson(ppaCoversNegativeHours)}",
-"spot_price_growth_pct": "${escapeStringForJson(spotPriceGrowthPct)}",
 "soc_date": "${escapeStringForJson(socDate)}",
 "cod_date": "${escapeStringForJson(codDate)}",
 "index_capex_turbine": "${indexCapexTurbine}",
 "index_capex_bop": "${indexCapexBop}",
 "index_capex_inter": "${indexCapexInterconn}",
-"opex_wtg_bands": "${escapeStringForJson(opexWtgBandsJson)}"
+"opex_wtg_bands": "${escapeStringForJson(opexWtgBandsJson)}",
+"merchant_mode": "${escapeStringForJson(merchantMode)}",
+"curtail_econ_pct": "${escapeStringForJson(curtailEconomicoPct)}",
+"curtail_tecnico_pct": "${escapeStringForJson(curtailTecnicoPct)}",
+"annual_market_prices": "${escapeStringForJson(annualMarketPricesJson)}",
+"annual_capture_rates": "${escapeStringForJson(annualCaptureRatesJson)}",
+"annual_captured_prices": "${escapeStringForJson(annualCapturedPricesJson)}",
+"hourly_prices_csv": "${escapeStringForJson(hourlyPricesCsv)}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'CalculateWindModel',
