@@ -1,28 +1,36 @@
 // Automatic FlutterFlow imports
-import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart'; // Imports other custom actions
-import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import '/custom_code/actions/index.dart';
-
+import 'dart:io';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> downloadTemplate(String url, String fileName) async {
-  if (url.isEmpty) return;
-
   try {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      print('downloadTemplate: no se puede abrir la URL $url');
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode != 200) {
+      throw Exception('Error descargando plantilla: ${response.statusCode}');
     }
+
+    // Guardar archivo localmente en iOS
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/$fileName';
+    final file = File(filePath);
+    
+    await file.writeAsBytes(response.bodyBytes);
+    
+    print('Archivo descargado en: $filePath');
+    
   } catch (e) {
-    print('downloadTemplate error: $e');
+    print('Error en downloadTemplate: $e');
+    rethrow;
   }
 }
