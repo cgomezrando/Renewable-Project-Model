@@ -8,18 +8,20 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'dart:html' as html;
+import 'package:file_picker/file_picker.dart';
+import 'dart:convert';
 
 Future<bool> loadHourlyPricesCsv() async {
   try {
-    final upload = html.FileUploadInputElement()..accept = '.csv';
-    upload.click();
-    await upload.onChange.first;
-    if (upload.files == null || upload.files!.isEmpty) return false;
-    final reader = html.FileReader();
-    reader.readAsText(upload.files!.first);
-    await reader.onLoadEnd.first;
-    final content = reader.result as String? ?? '';
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['csv'],
+      withData: true,
+    );
+    if (result == null || result.files.isEmpty) return false;
+    final bytes = result.files.first.bytes;
+    if (bytes == null || bytes.isEmpty) return false;
+    final content = utf8.decode(bytes, allowMalformed: true);
     if (content.isEmpty) return false;
 
     FFAppState().update(() {
