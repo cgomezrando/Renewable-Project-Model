@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import '/app_state.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'dart:html' as html;
+import 'package:file_picker/file_picker.dart';
 import 'dart:convert';
 
 Future<bool> showCurtailmentDialog(BuildContext context) async {
@@ -59,14 +59,15 @@ Future<bool> showCurtailmentDialog(BuildContext context) async {
   Future<bool> _pickAndParseAnnual(
       String targetKey, int rows, StateSetter setState) async {
     try {
-      final upload = html.FileUploadInputElement()..accept = '.csv';
-      upload.click();
-      await upload.onChange.first;
-      if (upload.files == null || upload.files!.isEmpty) return false;
-      final reader = html.FileReader();
-      reader.readAsText(upload.files!.first);
-      await reader.onLoadEnd.first;
-      final content = reader.result as String? ?? '';
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['csv'],
+        withData: true,
+      );
+      if (result == null || result.files.isEmpty) return false;
+      final bytes = result.files.first.bytes;
+      if (bytes == null || bytes.isEmpty) return false;
+      final content = utf8.decode(bytes, allowMalformed: true);
       if (content.isEmpty) return false;
       final ok = await parseCsvAnnual(content, targetKey, rows);
       if (ok) setState(() {});
@@ -78,14 +79,15 @@ Future<bool> showCurtailmentDialog(BuildContext context) async {
 
   Future<bool> _pickAndParse8760(String target, StateSetter setState) async {
     try {
-      final upload = html.FileUploadInputElement()..accept = '.csv';
-      upload.click();
-      await upload.onChange.first;
-      if (upload.files == null || upload.files!.isEmpty) return false;
-      final reader = html.FileReader();
-      reader.readAsText(upload.files!.first);
-      await reader.onLoadEnd.first;
-      final content = reader.result as String? ?? '';
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['csv'],
+        withData: true,
+      );
+      if (result == null || result.files.isEmpty) return false;
+      final bytes = result.files.first.bytes;
+      if (bytes == null || bytes.isEmpty) return false;
+      final content = utf8.decode(bytes, allowMalformed: true);
       if (content.isEmpty) return false;
 
       final lines = content
